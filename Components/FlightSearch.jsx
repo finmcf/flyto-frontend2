@@ -19,7 +19,7 @@ const FlightSearch = (props) => {
     <TouchableOpacity
       activeOpacity={0.9}
       style={styles.container}
-      onPress={props.searchEverywhereToSomewhere}
+      onPress={props.everyWhereFlightSearch}
     >
       <Text style={styles.text}>Search</Text>
     </TouchableOpacity>

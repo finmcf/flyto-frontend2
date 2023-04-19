@@ -77,16 +77,46 @@ export default function App() {
 
   const [flightOptions, setFlightOptions] = useState([]);
 
-  const searchEverywhereToSomewhere = (event) => {
+  const singleFlightSearch = () => {
+    fetch(
+      `http://localhost:4000/flight-search?originCode=${departureLocationIata}&destinationCode=${arrivalLocationIata}&dateOfDeparture=${departureDate}${
+        oneWayOrReturnSelected === "Return" ? "&dateOfReturn=" + returnDate : ""
+      }${
+        children ? "&children=" + children : ""
+      }&travelClass=${travelClass}&adults=${adults}${
+        directFlight ? "&nonStop=yes" : ""
+      }`
+    )
+      .then((response) => response.json())
+      .then((response) => response.data)
+      .then((response) => response.filter(Boolean))
+      .then((response) =>
+        response.sort(
+          (a, b) => parseFloat(a.price.total) - parseFloat(b.price.total)
+        )
+      )
+      .then((response) => response.slice(0, 9))
+      .then((response) => {
+        console.log(response);
+        setFlightOptions(response);
+      });
+  };
+
+  const everyWhereFlightSearch = (event) => {
     event.preventDefault();
+
+    const isDepartureEverywhere = departureLocationIata === "EVERYWHERE";
+    const isArrivalEverywhere = arrivalLocationIata === "EVERYWHERE";
 
     Promise.all(
       routes.map((route) =>
         fetch(
           `http://localhost:4000/flight-search?originCode=${
-            route.iataCode
-          }&destinationCode=${arrivalLocationIata}&dateOfDeparture=${departureDate}${
-            oneWayOrReturnSelected == "Return"
+            isDepartureEverywhere ? route.iataCode : departureLocationIata
+          }&destinationCode=${
+            isArrivalEverywhere ? route.iataCode : arrivalLocationIata
+          }&dateOfDeparture=${departureDate}${
+            oneWayOrReturnSelected === "Return"
               ? "&dateOfReturn=" + returnDate
               : ""
           }${
@@ -144,9 +174,9 @@ export default function App() {
     };
   };
 
-  const fetchRoutes = async (departureAirportCode) => {
+  const fetchRoutes = async (airportCode) => {
     const response = await fetch(
-      `http://localhost:4000/airport-route?departureAirportCode=${departureAirportCode}`
+      `http://localhost:4000/airport-route?departureAirportCode=${airportCode}`
     );
     const json = await response.json();
     const data = json.data;
@@ -161,8 +191,16 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (departureLocationIata === "EVERYWHERE" && arrivalLocationIata) {
-      fetchRoutes(arrivalLocationIata);
+    const targetAirportCode =
+      departureLocationIata === "EVERYWHERE"
+        ? arrivalLocationIata
+        : departureLocationIata;
+
+    if (
+      (departureLocationIata === "EVERYWHERE" && arrivalLocationIata) ||
+      (arrivalLocationIata === "EVERYWHERE" && departureLocationIata)
+    ) {
+      fetchRoutes(targetAirportCode);
     }
   }, [departureLocationIata, arrivalLocationIata]);
 
@@ -210,7 +248,10 @@ export default function App() {
           />
 
           <FlightSearch
-            searchEverywhereToSomewhere={searchEverywhereToSomewhere}
+            singleFlightSearch={singleFlightSearch}
+            everyWhereFlightSearch={everyWhereFlightSearch}
+            departureLocationIata={departureLocationIata}
+            arrivalLocationIata={arrivalLocationIata}
           />
         </View>
         <PassengersModal
