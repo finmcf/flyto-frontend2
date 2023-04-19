@@ -52,6 +52,8 @@ export default function App() {
 
   const [returnDate, setReturnDate] = useState(null);
 
+  const [directFlight, setDirectFlight] = useState(false);
+
   const [departureButtonPressed, setDepartureButtonPressed] = useState(false);
 
   const [oneWayOrReturnSelected, setOneWayOrReturnSelected] =
@@ -67,11 +69,49 @@ export default function App() {
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
 
+  const [travelClass, setTravelClass] = useState("ECONOMY");
+
   const [currency, setCurrency] = useState("USD");
 
   const [routes, setRoutes] = useState([]);
 
   const [flightOptions, setFlightOptions] = useState([]);
+
+  const searchEverywhereToSomewhere = (event) => {
+    event.preventDefault();
+
+    Promise.all(
+      routes.map((route) =>
+        fetch(
+          `http://localhost:4000/flight-search?originCode=${
+            route.iataCode
+          }&destinationCode=${arrivalLocationIata}&dateOfDeparture=${departureDate}${
+            oneWayOrReturnSelected == "Return"
+              ? "&dateOfReturn=" + returnDate
+              : ""
+          }${
+            children ? "&children=" + children : ""
+          }&travelClass=${travelClass}&adults=${adults}${
+            directFlight ? "&nonStop=yes" : ""
+          }`
+        )
+          .then((response) => response.json())
+          .then((response) => response.data)
+      )
+    )
+      .then((response) => [].concat.apply([], response))
+      .then((response) => response.filter(Boolean))
+      .then((response) =>
+        response.sort(
+          (a, b) => parseFloat(a.price.total) - parseFloat(b.price.total)
+        )
+      )
+      .then((response) => response.slice(0, 9))
+      .then((response) => {
+        console.log(response);
+        setFlightOptions(response);
+      });
+  };
 
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -166,9 +206,12 @@ export default function App() {
             setIsClassModalOpen={setIsClassModalOpen}
             adults={adults}
             children={children}
+            travelClass={travelClass}
           />
 
-          <FlightSearch />
+          <FlightSearch
+            searchEverywhereToSomewhere={searchEverywhereToSomewhere}
+          />
         </View>
         <PassengersModal
           isModalOpen={isPassengersModalOpen}
@@ -181,6 +224,7 @@ export default function App() {
         <ClassModal
           isModalOpen={isClassModalOpen}
           setIsModalOpen={setIsClassModalOpen}
+          setTravelClass={setTravelClass}
         />
         <DateModal
           oneWayOrReturnSelected={oneWayOrReturnSelected}

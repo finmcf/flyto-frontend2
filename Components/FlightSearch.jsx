@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, Dimensions, StyleSheet } from "react-native";
 
 const { width } = Dimensions.get("window");
 
-const FlightSearch = () => {
+const FlightSearch = (props) => {
   const styles = StyleSheet.create({
     container: {
       width: "100%",
@@ -16,7 +16,11 @@ const FlightSearch = () => {
     text: { color: "white", fontSize: 20 },
   });
   return (
-    <TouchableOpacity activeOpacity={0.9} style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      style={styles.container}
+      onPress={props.searchEverywhereToSomewhere}
+    >
       <Text style={styles.text}>Search</Text>
     </TouchableOpacity>
   );

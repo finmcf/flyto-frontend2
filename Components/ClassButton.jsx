@@ -10,7 +10,7 @@ const ClassButton = (props) => {
       style={styles.container}
       onPress={() => props.setIsModalOpen(true)}
     >
-      <Text style={styles.text}>ECONOMY</Text>
+      <Text style={styles.text}>{props.travelClass.replace(/_/g, " ")}</Text>
     </TouchableOpacity>
   );
 };

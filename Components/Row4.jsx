@@ -14,7 +14,10 @@ const Row4 = (props) => {
         adults={props.adults}
         children={props.children}
       />
-      <ClassButton setIsModalOpen={props.setIsClassModalOpen} />
+      <ClassButton
+        setIsModalOpen={props.setIsClassModalOpen}
+        travelClass={props.travelClass}
+      />
     </View>
   );
 };

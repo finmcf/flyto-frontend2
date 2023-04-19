@@ -19,12 +19,7 @@ import FlatListItem from "./FlatListItem";
 
 import DoneButton from "./DoneButton";
 
-const flightClasses = [
-  { id: "ECONOMY", name: "Class1" },
-  { id: "PREMIUM_ECONOMY", name: "Class2" },
-  { id: "BUSINESS", name: "Class3" },
-  { id: "FIRST", name: "Class4" },
-];
+const flightClasses = ["ECONOMY", "PREMIUM_ECONOMY", "BUSINESS", "FIRST"];
 
 const { width } = Dimensions.get("window");
 
@@ -41,8 +36,9 @@ const ClassModal = (props) => {
         justifyContent: "center",
         alignItems: "center",
       }}
+      onPress={() => props.setTravelClass(item)}
     >
-      <Text style={{ fontSize: width * 0.1 }}>{item.name}</Text>
+      <Text style={{ fontSize: width * 0.1 }}>{item}</Text>
     </TouchableOpacity>
   );
 
@@ -57,7 +53,7 @@ const ClassModal = (props) => {
       <FlatList
         data={flightClasses}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item}
         style={{
           marginTop: "30%",
           width: "100%",
