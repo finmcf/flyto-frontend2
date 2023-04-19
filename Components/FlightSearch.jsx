@@ -15,11 +15,23 @@ const FlightSearch = (props) => {
     },
     text: { color: "white", fontSize: 20 },
   });
+
+  const handleSearchPress = () => {
+    if (
+      props.departureLocationIata !== "EVERYWHERE" &&
+      props.arrivalLocationIata !== "EVERYWHERE"
+    ) {
+      props.singleFlightSearch();
+    } else {
+      props.everyWhereFlightSearch();
+    }
+  };
+
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={styles.container}
-      onPress={props.everyWhereFlightSearch}
+      onPress={handleSearchPress}
     >
       <Text style={styles.text}>Search</Text>
     </TouchableOpacity>

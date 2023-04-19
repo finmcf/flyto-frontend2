@@ -24,6 +24,7 @@
     "react-native": "0.70.5",
     "react-native-calendars": "^1.1294.0",
     "react-native-google-fonts": "^0.0.0",
+    "react-native-svg": "^13.9.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.9"
   },

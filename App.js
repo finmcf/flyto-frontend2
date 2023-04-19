@@ -103,8 +103,6 @@ export default function App() {
   };
 
   const everyWhereFlightSearch = (event) => {
-    event.preventDefault();
-
     const isDepartureEverywhere = departureLocationIata === "EVERYWHERE";
     const isArrivalEverywhere = arrivalLocationIata === "EVERYWHERE";
 
