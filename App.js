@@ -77,7 +77,10 @@ export default function App() {
 
   const [flightOptions, setFlightOptions] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const singleFlightSearch = () => {
+    setIsLoading(true);
     fetch(
       `http://localhost:4000/flight-search?originCode=${departureLocationIata}&destinationCode=${arrivalLocationIata}&dateOfDeparture=${departureDate}${
         oneWayOrReturnSelected === "Return" ? "&dateOfReturn=" + returnDate : ""
@@ -99,10 +102,12 @@ export default function App() {
       .then((response) => {
         console.log(response);
         setFlightOptions(response);
+        setIsLoading(false);
       });
   };
 
   const everyWhereFlightSearch = (event) => {
+    setIsLoading(true);
     const isDepartureEverywhere = departureLocationIata === "EVERYWHERE";
     const isArrivalEverywhere = arrivalLocationIata === "EVERYWHERE";
 
@@ -138,6 +143,7 @@ export default function App() {
       .then((response) => {
         console.log(response);
         setFlightOptions(response);
+        setIsLoading(false);
       });
   };
 
@@ -292,7 +298,7 @@ export default function App() {
           setRoutes={setRoutes}
           excludeIata={departureLocationIata}
         />
-        <SearchResults />
+        <SearchResults flightOptions={flightOptions} isLoading={isLoading} />
       </View>
     </ScrollView>
   );

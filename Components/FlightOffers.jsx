@@ -1,12 +1,19 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const FlightOffer = ({ flightName, departure, destination, price }) => {
+const FlightOffer = ({ flightInfo, price }) => {
   return (
     <View style={styles.flightOffer}>
-      <Text style={styles.flightName}>{flightName}</Text>
-      <Text style={styles.departure}>{departure}</Text>
-      <Text style={styles.destination}>{destination}</Text>
+      {flightInfo.map((info, index) => (
+        <View key={index}>
+          <Text style={styles.flightName}>{info.flightName}</Text>
+          <Text style={styles.departure}>{info.departure}</Text>
+          <Text style={styles.destination}>{info.destination}</Text>
+          {index !== flightInfo.length - 1 && (
+            <Text style={styles.transferText}>Transfer</Text>
+          )}
+        </View>
+      ))}
       <Text style={styles.price}>{price}</Text>
       <Text style={styles.bookNowButton}>Book Now</Text>
     </View>
@@ -34,6 +41,11 @@ const styles = StyleSheet.create({
   destination: {
     color: "black",
     marginBottom: 5,
+  },
+  transferText: {
+    color: "black",
+    fontStyle: "italic",
+    marginBottom: 10,
   },
   price: {
     color: "black",
