@@ -1,6 +1,6 @@
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, Animated } from "react-native";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import * as Location from "expo-location";
 
@@ -79,6 +79,8 @@ export default function App() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const API_KEY = "hello";
+
   const singleFlightSearch = () => {
     setIsLoading(true);
     fetch(
@@ -88,7 +90,13 @@ export default function App() {
         children ? "&children=" + children : ""
       }&travelClass=${travelClass}&adults=${adults}${
         directFlight ? "&nonStop=yes" : ""
-      }`
+      }`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": API_KEY,
+        },
+      }
     )
       .then((response) => response.json())
       .then((response) => response.data)
@@ -126,7 +134,13 @@ export default function App() {
             children ? "&children=" + children : ""
           }&travelClass=${travelClass}&adults=${adults}${
             directFlight ? "&nonStop=yes" : ""
-          }`
+          }`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": API_KEY,
+            },
+          }
         )
           .then((response) => response.json())
           .then((response) => response.data)
@@ -180,11 +194,26 @@ export default function App() {
 
   const fetchRoutes = async (airportCode) => {
     const response = await fetch(
-      `http://localhost:4000/airport-route?departureAirportCode=${airportCode}`
+      `http://localhost:4000/airport-route?departureAirportCode=${airportCode}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": API_KEY,
+        },
+      }
     );
-    const json = await response.json();
-    const data = json.data;
-    setRoutes(data);
+
+    if (response.ok) {
+      const json = await response.json();
+      const data = json.data;
+      setRoutes(data);
+    } else {
+      console.error(
+        "Error fetching routes:",
+        response.status,
+        response.statusText
+      );
+    }
   };
 
   useEffect(() => {
