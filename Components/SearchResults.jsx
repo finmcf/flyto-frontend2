@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -11,6 +11,12 @@ import FlightOffer from "./FlightOffers";
 const { width, height } = Dimensions.get("window");
 
 const SearchResults = (props) => {
+  const [fetchCounter, setFetchCounter] = useState(0);
+
+  useEffect(() => {
+    setFetchCounter((prevCounter) => prevCounter + 1);
+  }, [props.flightOptions]);
+
   if (props.isLoading) {
     return (
       <View
@@ -39,7 +45,7 @@ const SearchResults = (props) => {
 
         return (
           <TouchableOpacity
-            key={item.id}
+            key={`${item.id}-${fetchCounter}`}
             style={
               index !== props.flightOptions.length - 1
                 ? styles.itemWithSeparator

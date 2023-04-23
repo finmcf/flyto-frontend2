@@ -21,11 +21,16 @@ import Row4 from "./Components/Row4";
 import PassengersModal from "./Components/PassengersModal copy";
 
 import ClassModal from "./Components/ClassModal";
+
 import DateModal from "./Components/DateModal";
 
 import LocationModal from "./Components/LocationModal";
 
 import SearchResults from "./Components/SearchResults";
+
+import Constants from "expo-constants";
+
+const apiKey = Constants.manifest.extra.apiKey;
 
 export default function App() {
   const formattedDate = new Date().toISOString().slice(0, 10);
@@ -79,8 +84,6 @@ export default function App() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const API_KEY = "hello";
-
   const singleFlightSearch = () => {
     setIsLoading(true);
     fetch(
@@ -94,7 +97,7 @@ export default function App() {
       {
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": API_KEY,
+          "x-api-key": apiKey,
         },
       }
     )
@@ -138,7 +141,7 @@ export default function App() {
           {
             headers: {
               "Content-Type": "application/json",
-              "x-api-key": API_KEY,
+              "x-api-key": apiKey,
             },
           }
         )
@@ -198,7 +201,7 @@ export default function App() {
       {
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": API_KEY,
+          "x-api-key": apiKey,
         },
       }
     );
