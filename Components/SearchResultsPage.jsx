@@ -10,7 +10,7 @@ import FlightOffer from "./FlightOffers";
 
 const { width, height } = Dimensions.get("window");
 
-const SearchResults = (props) => {
+const SearchResultsPage = (props) => {
   const [fetchCounter, setFetchCounter] = useState(0);
 
   useEffect(() => {
@@ -67,10 +67,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: "10%",
+    paddingHorizontal: "8%",
   },
   itemWithSeparator: {
     marginBottom: "4%",
   },
 });
 
-export default SearchResults;
+export default SearchResultsPage;
