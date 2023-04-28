@@ -102,7 +102,7 @@ const SearchResultsScreen = (props) => {
         <FlightDetailsModal
           isModalOpen={isFlightDetailModalOpen}
           setIsModalOpen={setIsFlightDetailModalOpen}
-          item={props.flightConfirmation}
+          flightConfirmation={props.flightConfirmation}
         />
       )}
     </View>

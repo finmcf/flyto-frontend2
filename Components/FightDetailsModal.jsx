@@ -3,32 +3,63 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import ModalContainer from "./ModalContainer";
 
 const FlightDetailsModal = (props) => {
-  const flightOffer = props.item;
+  const flightOffer = props.flightConfirmation;
 
   if (!flightOffer || !flightOffer.dictionaries || !flightOffer.data) {
     return null;
   }
 
-  const departureAirport =
-    flightOffer.dictionaries.locations[
-      flightOffer.data.flightOffers[0].itineraries[0].segments[0].departure
-        .iataCode
-    ];
-  const arrivalAirport =
-    flightOffer.dictionaries.locations[
-      flightOffer.data.flightOffers[0].itineraries[0].segments[1].arrival
-        .iataCode
-    ];
-  const luggage =
-    flightOffer.data.flightOffers[0].travelerPricings[0].fareDetailsBySegment[0]
-      .includedCheckedBags;
-  const cabin =
-    flightOffer.data.flightOffers[0].travelerPricings[0].fareDetailsBySegment[0]
-      .cabin;
-  const duration =
-    flightOffer.data.flightOffers[0].itineraries[0].segments[0].duration;
-  const airline =
-    flightOffer.data.flightOffers[0].itineraries[0].segments[0].carrierCode;
+  const itineraries = flightOffer.data.flightOffers[0].itineraries;
+  const travelerPricings = flightOffer.data.flightOffers[0].travelerPricings;
+
+  const renderSegments = (segments) => {
+    return segments.map((segment, index) => {
+      const departureAirport =
+        flightOffer.dictionaries.locations[segment.departure.iataCode];
+      const arrivalAirport =
+        flightOffer.dictionaries.locations[segment.arrival.iataCode];
+      return (
+        <View key={index}>
+          <Text>
+            {departureAirport.cityCode} ({departureAirport.countryCode}) -{" "}
+            {arrivalAirport.cityCode} ({arrivalAirport.countryCode})
+          </Text>
+          <Text>Duration: {segment.duration}</Text>
+          <Text>Airline: {segment.carrierCode}</Text>
+        </View>
+      );
+    });
+  };
+
+  const renderItineraries = () => {
+    return itineraries.map((itinerary, index) => {
+      return (
+        <View key={index}>
+          <Text style={styles.heading}>
+            {index === 0 ? "Outbound" : "Return"}
+          </Text>
+          {renderSegments(itinerary.segments)}
+        </View>
+      );
+    });
+  };
+
+  const renderTravelerPricings = () => {
+    const adultCount = travelerPricings.filter(
+      (traveler) => traveler.travelerType === "ADULT"
+    ).length;
+    const childCount = travelerPricings.filter(
+      (traveler) => traveler.travelerType === "CHILD"
+    ).length;
+
+    return (
+      <View>
+        <Text style={styles.heading}>Passengers</Text>
+        <Text>Adults: {adultCount}</Text>
+        {childCount > 0 && <Text>Children: {childCount}</Text>}
+      </View>
+    );
+  };
 
   return (
     <ModalContainer
@@ -37,21 +68,8 @@ const FlightDetailsModal = (props) => {
       paddingHorizontal={20}
     >
       <View style={styles.modalContent}>
-        <Text style={styles.heading}>Luggage</Text>
-        <Text>
-          {luggage.weight} {luggage.weightUnit} (included)
-        </Text>
-        <Text style={styles.heading}>Destination</Text>
-        <Text>
-          {departureAirport.cityCode} ({departureAirport.countryCode}) -{" "}
-          {arrivalAirport.cityCode} ({arrivalAirport.countryCode})
-        </Text>
-        <Text style={styles.heading}>Cabin</Text>
-        <Text>{cabin}</Text>
-        <Text style={styles.heading}>Duration</Text>
-        <Text>{duration}</Text>
-        <Text style={styles.heading}>Airline</Text>
-        <Text>{airline}</Text>
+        {renderItineraries()}
+        {renderTravelerPricings()}
 
         <TouchableOpacity style={styles.bookButton} onPress={() => {}}>
           <Text style={styles.bookButtonText}>Book Flight</Text>
