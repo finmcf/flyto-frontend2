@@ -13,6 +13,8 @@ const App = () => {
   const [flightOptions, setFlightOptions] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [flightConfirmation, setFlightConfirmation] = useState([]);
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="FlightSearchScreen">
@@ -31,6 +33,8 @@ const App = () => {
               {...props}
               isLoading={isLoading}
               flightOptions={flightOptions}
+              flightConfirmation={flightConfirmation}
+              setFlightConfirmation={setFlightConfirmation}
             />
           )}
         </Stack.Screen>

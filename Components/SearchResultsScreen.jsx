@@ -5,15 +5,37 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Dimensions,
-  Button,
 } from "react-native";
-
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FlightOffer from "./FlightOffers";
+import FlightDetailsModal from "./FightDetailsModal";
 
 const { width, height } = Dimensions.get("window");
 
 const SearchResultsScreen = (props) => {
+  const [isFlightDetailModalOpen, setIsFlightDetailModalOpen] = useState(false);
+
+  const sendFlightPricingRequest = async (flight) => {
+    try {
+      const response = await fetch(
+        "http://localhost:4000/flight-confirmation",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(flight),
+        }
+      );
+
+      const data = await response.json();
+      props.setFlightConfirmation(data);
+      setIsFlightDetailModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching flight pricing:", error);
+    }
+  };
+
   const [fetchCounter, setFetchCounter] = useState(0);
 
   useEffect(() => {
@@ -63,6 +85,7 @@ const SearchResultsScreen = (props) => {
                   ? styles.itemWithSeparator
                   : {}
               }
+              onPress={() => sendFlightPricingRequest(item)}
             >
               <FlightOffer
                 flightInfo={flightInfo}
@@ -72,6 +95,13 @@ const SearchResultsScreen = (props) => {
           );
         })}
       </View>
+      {props.flightConfirmation && (
+        <FlightDetailsModal
+          isModalOpen={isFlightDetailModalOpen}
+          setIsModalOpen={setIsFlightDetailModalOpen}
+          item={props.flightConfirmation}
+        />
+      )}
     </View>
   );
 };
