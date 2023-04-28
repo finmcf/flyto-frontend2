@@ -6,6 +6,9 @@ const FlightOffer = ({ flightInfo, price }) => {
     <View style={styles.flightOffer}>
       {flightInfo.map((info, index) => (
         <View key={index}>
+          {info.isReturn && (
+            <Text style={styles.returnFlightText}>Return Flight</Text>
+          )}
           <Text style={styles.flightName}>{info.flightName}</Text>
           <Text style={styles.departure}>{info.departure}</Text>
           <Text style={styles.destination}>{info.destination}</Text>
@@ -59,6 +62,13 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 8,
     textAlign: "center",
+    marginTop: 10,
+  },
+
+  returnFlightText: {
+    color: "black",
+    fontStyle: "italic",
+    marginBottom: 10,
     marginTop: 10,
   },
 });

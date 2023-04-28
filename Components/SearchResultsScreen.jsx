@@ -69,13 +69,16 @@ const SearchResultsScreen = (props) => {
       </TouchableOpacity>
       <View style={styles.flightOptionsContainer}>
         {props.flightOptions.map((item, index) => {
-          const segments = item.itineraries[0].segments;
+          const flightInfo = item.itineraries.flatMap((itinerary, i) => {
+            const segments = itinerary.segments;
 
-          const flightInfo = segments.map((segment) => ({
-            flightName: `${segment.carrierCode} ${segment.number}`,
-            departure: `${segment.departure.iataCode} ${segment.departure.at}`,
-            destination: `${segment.arrival.iataCode} ${segment.arrival.at}`,
-          }));
+            return segments.map((segment) => ({
+              flightName: `${segment.carrierCode} ${segment.number}`,
+              departure: `${segment.departure.iataCode} ${segment.departure.at}`,
+              destination: `${segment.arrival.iataCode} ${segment.arrival.at}`,
+              isReturn: i === 1,
+            }));
+          });
 
           return (
             <TouchableOpacity
