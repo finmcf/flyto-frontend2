@@ -13,7 +13,6 @@ import ModalContainer from "./ModalContainer";
 
 const SearchInput = ({ onSearch, onClose, width }) => {
   const [inputText, setInputText] = useState("");
-  const [isCrossVisible, setIsCrossVisible] = useState(false);
 
   const styles = StyleSheet.create({
     input: {
@@ -31,31 +30,21 @@ const SearchInput = ({ onSearch, onClose, width }) => {
       justifyContent: "center",
       alignItems: "center",
       marginTop: 0,
-      backgroundColor: "#F0F0F0",
+      backgroundColor: "#fffefe",
       paddingHorizontal: width * 0.025,
       paddingVertical: width * 0.025,
       width: "100%",
+      position: "relative",
     },
     closeText: {
       fontSize: width * 0.045,
-    },
-    crossButton: {
-      position: "absolute",
-      right: width * 0.04,
-      padding: width * 0.01,
+      marginLeft: "6%",
     },
   });
 
   const handleTextChange = (text) => {
     setInputText(text);
-    setIsCrossVisible(text.length > 0);
     onSearch(text);
-  };
-
-  const handleClearText = () => {
-    setInputText("");
-    setIsCrossVisible(false);
-    onSearch("");
   };
 
   return (
@@ -69,11 +58,6 @@ const SearchInput = ({ onSearch, onClose, width }) => {
         onChangeText={handleTextChange}
         value={inputText}
       />
-      {isCrossVisible && (
-        <TouchableOpacity style={styles.crossButton} onPress={handleClearText}>
-          <Text style={styles.closeText}>×</Text>
-        </TouchableOpacity>
-      )}
     </View>
   );
 };
@@ -102,13 +86,15 @@ const LocationModal = (props) => {
     }
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
     <TouchableOpacity
       style={{
-        borderWidth: width * 0.002,
+        borderTopWidth: index === 0 ? 0 : width * 0.002, // Remove border for the first item
+        flex: 1,
         borderColor: "#afafaf",
-        width: "100%",
-        paddingVertical: "7%",
+        width: width * 0.9, // Updated width
+        alignSelf: "center", // Align to the center
+        paddingVertical: "3%",
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -117,7 +103,10 @@ const LocationModal = (props) => {
         props.setLocationIata(item.iata);
       }}
     >
-      <Text style={{ fontSize: width * 0.1 }}>{item.name}</Text>
+      <Text style={{ fontSize: width * 0.06 }}>
+        {item.name}
+        {item.iata !== "EVERYWHERE" ? ` (${item.iata})` : ""}
+      </Text>
     </TouchableOpacity>
   );
 
