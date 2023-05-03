@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import {
   View,
   TextInput,
@@ -7,11 +6,77 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
+  StyleSheet,
 } from "react-native";
-
 import data from "./airports copy.json";
-
 import ModalContainer from "./ModalContainer";
+
+const SearchInput = ({ onSearch, onClose, width }) => {
+  const [inputText, setInputText] = useState("");
+  const [isCrossVisible, setIsCrossVisible] = useState(false);
+
+  const styles = StyleSheet.create({
+    input: {
+      width: width * 0.7,
+      height: width * 0.1,
+      paddingHorizontal: width * 0.025,
+      color: "black",
+      backgroundColor: "#F4F4F4",
+      borderRadius: width * 0.04,
+      fontSize: width * 0.045,
+      textAlign: "center",
+    },
+    topView: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 0,
+      backgroundColor: "#F0F0F0",
+      paddingHorizontal: width * 0.025,
+      paddingVertical: width * 0.025,
+      width: "100%",
+    },
+    closeText: {
+      fontSize: width * 0.045,
+    },
+    crossButton: {
+      position: "absolute",
+      right: width * 0.04,
+      padding: width * 0.01,
+    },
+  });
+
+  const handleTextChange = (text) => {
+    setInputText(text);
+    setIsCrossVisible(text.length > 0);
+    onSearch(text);
+  };
+
+  const handleClearText = () => {
+    setInputText("");
+    setIsCrossVisible(false);
+    onSearch("");
+  };
+
+  return (
+    <View style={styles.topView}>
+      <TouchableOpacity onPress={onClose}>
+        <Text style={styles.closeText}>Close</Text>
+      </TouchableOpacity>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter location"
+        onChangeText={handleTextChange}
+        value={inputText}
+      />
+      {isCrossVisible && (
+        <TouchableOpacity style={styles.crossButton} onPress={handleClearText}>
+          <Text style={styles.closeText}>×</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+};
 
 const LocationModal = (props) => {
   const [suggestions, setSuggestions] = useState([]);
@@ -30,7 +95,6 @@ const LocationModal = (props) => {
       return itemName.includes(searchText) && item.iata !== props.excludeIata;
     });
 
-    // Add the "Everywhere" option at the top of the list if it hasn't been selected in the other modal
     if (props.excludeIata !== everywhere.iata) {
       setSuggestions([everywhere, ...filteredData]);
     } else {
@@ -62,9 +126,10 @@ const LocationModal = (props) => {
       isModalOpen={props.isModalOpen}
       setIsModalOpen={props.setIsModalOpen}
     >
-      <TextInput
-        placeholder="Search"
-        onChangeText={(text) => handleSearch(text)}
+      <SearchInput
+        onSearch={handleSearch}
+        onClose={() => props.setIsModalOpen(false)}
+        width={width}
       />
       <FlatList
         data={suggestions}

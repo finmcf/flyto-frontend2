@@ -72,7 +72,7 @@ const SwitchButton = (props) => {
     container: {
       position: "absolute",
       zIndex: 10,
-      bottom: "30%",
+      bottom: "25%",
       right: "7%",
       backgroundColor: "#64B154",
       borderRadius: width * 0.055,
