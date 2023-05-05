@@ -78,7 +78,7 @@ export default function FlightSearchScreen(props) {
     props.setIsLoading(true);
     props.navigation.navigate("SearchResultsScreen");
     fetch(
-      `http://localhost:4000/flight-search?originCode=${departureLocationIata}&destinationCode=${arrivalLocationIata}&dateOfDeparture=${departureDate}${
+      `http://192.168.1.104:4000/flight-search?originCode=${departureLocationIata}&destinationCode=${arrivalLocationIata}&dateOfDeparture=${departureDate}${
         oneWayOrReturnSelected === "Return" ? "&dateOfReturn=" + returnDate : ""
       }${
         children ? "&children=" + children : ""
@@ -116,7 +116,7 @@ export default function FlightSearchScreen(props) {
     Promise.all(
       routes.map((route) =>
         fetch(
-          `http://localhost:4000/flight-search?originCode=${
+          `http://192.168.1.104:4000/flight-search?originCode=${
             isDepartureEverywhere ? route.iataCode : departureLocationIata
           }&destinationCode=${
             isArrivalEverywhere ? route.iataCode : arrivalLocationIata
@@ -188,7 +188,7 @@ export default function FlightSearchScreen(props) {
 
   const fetchRoutes = async (airportCode) => {
     const response = await fetch(
-      `http://localhost:4000/airport-route?departureAirportCode=${airportCode}`,
+      `http://192.168.1.104:4000/airport-route?departureAirportCode=${airportCode}`,
       {
         headers: {
           "Content-Type": "application/json",

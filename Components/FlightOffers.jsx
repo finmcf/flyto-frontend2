@@ -1,11 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 const FlightOffer = ({ flightInfo, price }) => {
   return (
     <View style={styles.flightOffer}>
       {flightInfo.map((info, index) => (
-        <View key={index}>
+        <View key={index} style={styles.flightInfoContainer}>
           {info.isReturn && (
             <Text style={styles.returnFlightText}>Return Flight</Text>
           )}
@@ -25,51 +27,53 @@ const FlightOffer = ({ flightInfo, price }) => {
 
 const styles = StyleSheet.create({
   flightOffer: {
-    marginRight: 10,
     backgroundColor: "#F4F4F4",
-    padding: 10,
+    padding: width * 0.03,
     borderRadius: 8,
     flex: 1,
   },
+  flightInfoContainer: {
+    marginBottom: height * 0.01,
+  },
   flightName: {
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: "bold",
     color: "black",
-    marginBottom: 10,
+    marginBottom: height * 0.01,
   },
   departure: {
     color: "black",
-    marginBottom: 5,
+    marginBottom: height * 0.005,
   },
   destination: {
     color: "black",
-    marginBottom: 5,
+    marginBottom: height * 0.005,
   },
   transferText: {
     color: "black",
     fontStyle: "italic",
-    marginBottom: 10,
+    marginBottom: height * 0.01,
   },
   price: {
     color: "black",
     fontWeight: "bold",
-    fontSize: 20,
-    marginTop: 10,
+    fontSize: width * 0.05,
+    marginTop: height * 0.01,
   },
   bookNowButton: {
     backgroundColor: "#64B154",
     color: "white",
-    padding: 5,
+    paddingVertical: height * 0.01,
+    paddingHorizontal: width * 0.03,
     borderRadius: 8,
     textAlign: "center",
-    marginTop: 10,
+    marginTop: height * 0.01,
   },
-
   returnFlightText: {
     color: "black",
     fontStyle: "italic",
-    marginBottom: 10,
-    marginTop: 10,
+    marginBottom: height * 0.01,
+    marginTop: height * 0.01,
   },
 });
 

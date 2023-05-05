@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FlightOffer from "./FlightOffers";
@@ -18,7 +19,7 @@ const SearchResultsScreen = (props) => {
   const sendFlightPricingRequest = async (flight) => {
     try {
       const response = await fetch(
-        "http://localhost:4000/flight-confirmation",
+        "http://192.168.1.104:4000/flight-confirmation",
         {
           method: "POST",
           headers: {
@@ -44,15 +45,8 @@ const SearchResultsScreen = (props) => {
 
   if (props.isLoading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          margin: width * 0.1,
-        }}
-      >
-        <ActivityIndicator size={width * 0.35} color="#64B154" />
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#64B154" />
       </View>
     );
   }
@@ -67,7 +61,7 @@ const SearchResultsScreen = (props) => {
       >
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
-      <View style={styles.flightOptionsContainer}>
+      <ScrollView contentContainerStyle={styles.flightOptionsContainer}>
         {props.flightOptions.map((item, index) => {
           const flightInfo = item.itineraries.flatMap((itinerary, i) => {
             const segments = itinerary.segments;
@@ -96,8 +90,9 @@ const SearchResultsScreen = (props) => {
               />
             </TouchableOpacity>
           );
+          // ... existing code ...
         })}
-      </View>
+      </ScrollView>
       {props.flightConfirmation && (
         <FlightDetailsModal
           isModalOpen={isFlightDetailModalOpen}
@@ -115,17 +110,24 @@ const styles = StyleSheet.create({
     marginTop: "2%",
   },
   flightOptionsContainer: {
-    flex: 1,
-    marginTop: "10%",
+    flexGrow: 1,
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.05,
   },
   itemWithSeparator: {
-    marginBottom: "4%",
+    marginBottom: height * 0.02,
   },
   backButton: {
     position: "absolute",
-    top: 2,
-    left: 10,
+    top: height * 0.02,
+    left: width * 0.02,
     zIndex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: width * 0.1,
   },
 });
 

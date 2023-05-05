@@ -8,7 +8,7 @@ import {
   Dimensions,
   StyleSheet,
 } from "react-native";
-import data from "./airports copy.json";
+
 import ModalContainer from "./ModalContainer";
 
 const SearchInput = ({ onSearch, onClose, width }) => {
@@ -72,17 +72,38 @@ const LocationModal = (props) => {
     iata: "EVERYWHERE",
   };
 
-  const handleSearch = (text) => {
-    const filteredData = data.filter((item) => {
-      const itemName = item.name.toLowerCase();
-      const searchText = text.toLowerCase();
-      return itemName.includes(searchText) && item.iata !== props.excludeIata;
-    });
+  const handleSearch = async (text) => {
+    if (text.length > 0) {
+      try {
+        const response = await fetch(
+          `http://192.168.1.104:4000/city-and-airport-search/${text}`
+        );
+        const result = await response.json();
 
-    if (props.excludeIata !== everywhere.iata) {
-      setSuggestions([everywhere, ...filteredData]);
+        // Check if result.data is defined before mapping over it
+        if (result.data) {
+          const locations = result.data.map((location) => {
+            return {
+              name: location.name,
+              iata: location.iataCode,
+            };
+          });
+
+          if (props.excludeIata !== everywhere.iata) {
+            setSuggestions([everywhere, ...locations]);
+          } else {
+            setSuggestions(locations);
+          }
+        } else {
+          // Handle the case when result.data is undefined
+
+          setSuggestions([]);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     } else {
-      setSuggestions(filteredData);
+      setSuggestions([]);
     }
   };
 

@@ -1,6 +1,15 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  ScrollView,
+} from "react-native";
 import ModalContainer from "./ModalContainer";
+
+const { width } = Dimensions.get("window");
 
 const FlightDetailsModal = (props) => {
   const flightOffer = props.flightConfirmation;
@@ -67,14 +76,14 @@ const FlightDetailsModal = (props) => {
       setIsModalOpen={props.setIsModalOpen}
       paddingHorizontal={20}
     >
-      <View style={styles.modalContent}>
+      <ScrollView contentContainerStyle={styles.modalContent}>
         {renderItineraries()}
         {renderTravelerPricings()}
 
         <TouchableOpacity style={styles.bookButton} onPress={() => {}}>
           <Text style={styles.bookButtonText}>Book Flight</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </ModalContainer>
   );
 };
@@ -84,6 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    width: width * 0.9,
   },
   heading: {
     fontSize: 18,
