@@ -62,6 +62,24 @@ const SearchInput = ({ onSearch, onClose, width }) => {
   );
 };
 
+const countryCodeToFlag = (countryCode) => {
+  if (!countryCode) {
+    return ""; // Return an empty string if countryCode is undefined or null
+  }
+
+  const OFFSET = 127397;
+  const codePoints = countryCode
+    .toUpperCase()
+    .split("")
+    .map((char) => char.charCodeAt() + OFFSET);
+
+  const flagEmoji = String.fromCodePoint(...codePoints);
+
+  console.log("Generated Flag Emoji:", flagEmoji);
+
+  return flagEmoji;
+};
+
 const LocationModal = (props) => {
   const [suggestions, setSuggestions] = useState([]);
 
@@ -86,6 +104,7 @@ const LocationModal = (props) => {
             return {
               name: location.name,
               iata: location.iataCode,
+              countryCode: location.address?.countryCode || "", // Extract countryCode from the address object
             };
           });
 
@@ -96,7 +115,6 @@ const LocationModal = (props) => {
           }
         } else {
           // Handle the case when result.data is undefined
-
           setSuggestions([]);
         }
       } catch (error) {
@@ -107,29 +125,37 @@ const LocationModal = (props) => {
     }
   };
 
-  const renderItem = ({ item, index }) => (
-    <TouchableOpacity
-      style={{
-        borderTopWidth: index === 0 ? 0 : width * 0.002, // Remove border for the first item
-        flex: 1,
-        borderColor: "#afafaf",
-        width: width * 0.9, // Updated width
-        alignSelf: "center", // Align to the center
-        paddingVertical: "3%",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-      onPress={() => {
-        props.setLocation(item.name);
-        props.setLocationIata(item.iata);
-      }}
-    >
-      <Text style={{ fontSize: width * 0.06 }}>
-        {item.name}
-        {item.iata !== "EVERYWHERE" ? ` (${item.iata})` : ""}
-      </Text>
-    </TouchableOpacity>
-  );
+  const renderItem = ({ item, index }) => {
+    console.log("Country Code:", item.countryCode); // Add this line
+    console.log("Flag Emoji:", countryCodeToFlag(item.countryCode)); // Add this line
+
+    return (
+      <TouchableOpacity
+        style={{
+          borderTopWidth: index === 0 ? 0 : width * 0.002,
+          flex: 1,
+          borderColor: "#afafaf",
+          width: width * 0.9,
+          alignSelf: "center",
+          paddingVertical: "3%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onPress={() => {
+          props.setLocation(item.name);
+          props.setLocationIata(item.iata);
+        }}
+      >
+        <Text style={{ fontSize: width * 0.06 }}>
+          {item.iata !== "EVERYWHERE"
+            ? `${countryCodeToFlag(item.countryCode)} `
+            : ""}
+          {item.name}
+          {item.iata !== "EVERYWHERE" ? ` (${item.iata})` : ""}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <ModalContainer
@@ -141,6 +167,7 @@ const LocationModal = (props) => {
         onClose={() => props.setIsModalOpen(false)}
         width={width}
       />
+
       <FlatList
         data={suggestions}
         renderItem={renderItem}
