@@ -126,9 +126,6 @@ const LocationModal = (props) => {
   };
 
   const renderItem = ({ item, index }) => {
-    console.log("Country Code:", item.countryCode); // Add this line
-    console.log("Flag Emoji:", countryCodeToFlag(item.countryCode)); // Add this line
-
     return (
       <TouchableOpacity
         style={{
@@ -138,15 +135,18 @@ const LocationModal = (props) => {
           width: width * 0.9,
           alignSelf: "center",
           paddingVertical: "3%",
-          justifyContent: "center",
+          justifyContent: "flex-start", // Change from "center" to "flex-start"
           alignItems: "center",
+          flexDirection: "row", // Add this line to change the layout to a row
         }}
         onPress={() => {
           props.setLocation(item.name);
           props.setLocationIata(item.iata);
         }}
       >
-        <Text style={{ fontSize: width * 0.06 }}>
+        <Text style={{ fontSize: width * 0.045 }}>
+          {" "}
+          {/* Adjust font size */}
           {item.iata !== "EVERYWHERE"
             ? `${countryCodeToFlag(item.countryCode)} `
             : ""}
