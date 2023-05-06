@@ -7,9 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { Calendar, CalendarList, DefaultTheme } from "react-native-calendars";
-
-import DoneButton from "./DoneButton";
+import { CalendarList } from "react-native-calendars";
 
 const { width, height } = Dimensions.get("window");
 
