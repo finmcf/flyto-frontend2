@@ -142,6 +142,7 @@ const LocationModal = (props) => {
         onPress={() => {
           props.setLocation(item.name);
           props.setLocationIata(item.iata);
+          props.setIsModalOpen(false); // Add this line to close the modal when an item is selected
         }}
       >
         <Text style={{ fontSize: width * 0.045 }}>

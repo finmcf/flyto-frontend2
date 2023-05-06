@@ -49,7 +49,11 @@ export default function FlightSearchScreen(props) {
     new Date().toISOString().slice(0, 10)
   );
 
-  const [returnDate, setReturnDate] = useState(null);
+  const [returnDate, setReturnDate] = useState(
+    new Date(new Date().setDate(new Date().getDate() + 7))
+      .toISOString()
+      .slice(0, 10)
+  );
 
   const [directFlight, setDirectFlight] = useState(false);
 

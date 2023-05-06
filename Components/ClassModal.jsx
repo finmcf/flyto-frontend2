@@ -1,44 +1,68 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import {
-  PanResponder,
-  View,
-  Animated,
-  Modal,
-  StyleSheet,
   Dimensions,
   FlatList,
+  StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
-
-import CloseButton from "./CloseButton";
 
 import ModalContainer from "./ModalContainer";
 
-import FlatListItem from "./FlatListItem";
-
-import DoneButton from "./DoneButton";
-
-const flightClasses = ["ECONOMY", "PREMIUM_ECONOMY", "BUSINESS", "FIRST"];
+const flightClasses = [
+  { displayName: "ECONOMY ", value: "ECONOMY" },
+  { displayName: "PREMIUM ECONOMY", value: "PREMIUM_ECONOMY" },
+  { displayName: "BUSINESS", value: "BUSINESS" },
+  { displayName: "FIRST", value: "FIRST" },
+];
 
 const { width } = Dimensions.get("window");
 
 const ClassModal = (props) => {
-  const styles = StyleSheet.create({});
+  const styles = StyleSheet.create({
+    listItem: {
+      borderColor: "#afafaf",
+      width: width * 0.8,
+      alignSelf: "center",
+      paddingVertical: "5%",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "row",
+      marginVertical: width * 0.01,
+    },
+    text: {
+      fontSize: width * 0.07,
+    },
+    closeText: {
+      fontSize: width * 0.045,
+      marginLeft: "6%",
+    },
+    topView: {
+      flexDirection: "row",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      marginTop: 0,
+      backgroundColor: "#fffefe",
+      paddingHorizontal: width * 0.025,
+      paddingVertical: width * 0.025,
+      width: "100%",
+      position: "relative",
+    },
+  });
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
     <TouchableOpacity
-      style={{
-        borderWidth: width * 0.002,
-        borderColor: "#afafaf",
-        width: "100%",
-        paddingVertical: "7%",
-        justifyContent: "center",
-        alignItems: "center",
+      style={[
+        styles.listItem,
+        { borderTopWidth: index === 0 ? 0 : width * 0.002 },
+      ]}
+      onPress={() => {
+        props.setTravelClass(item.value);
+        props.setIsModalOpen(false);
       }}
-      onPress={() => props.setTravelClass(item)}
     >
-      <Text style={{ fontSize: width * 0.1 }}>{item}</Text>
+      <Text style={styles.text}>{item.displayName}</Text>
     </TouchableOpacity>
   );
 
@@ -48,21 +72,20 @@ const ClassModal = (props) => {
       setIsModalOpen={props.setIsModalOpen}
       paddingHorizontal={"0%"}
     >
-      <CloseButton setIsModalOpen={props.setIsModalOpen} />
+      <View style={styles.topView}>
+        <TouchableOpacity onPress={() => props.setIsModalOpen(false)}>
+          <Text style={styles.closeText}>Close</Text>
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         data={flightClasses}
         renderItem={renderItem}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.value}
         style={{
-          marginTop: "30%",
+          marginTop: "10%",
           width: "100%",
         }}
-      />
-      <DoneButton
-        setIsModalOpen={props.setIsModalOpen}
-        marginTop={"20%"}
-        marginHorizontal={"50%"}
       />
     </ModalContainer>
   );

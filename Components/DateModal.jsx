@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Dimensions, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 
 import { Calendar, CalendarList, DefaultTheme } from "react-native-calendars";
 
@@ -12,6 +18,9 @@ import ModalContainer from "./ModalContainer";
 // Define a MyDatePicker component that renders the DatePicker component
 // and handles the selected date
 const DateModal = (props) => {
+  const onClose = () => {
+    props.setIsModalOpen(false);
+  };
   const today = new Date();
   const maxDate = new Date(
     today.getFullYear(),
@@ -74,6 +83,13 @@ const DateModal = (props) => {
     },
   };
 
+  const styles = StyleSheet.create({
+    closeText: {
+      fontSize: width * 0.045,
+      marginLeft: "6%",
+    },
+  });
+
   return (
     // Use a View component to wrap the DatePicker component
 
@@ -126,10 +142,10 @@ const DateModal = (props) => {
           theme={theme}
         />
       </View>
-      <Text>{props.departureDate}</Text>
-      <Text>{props.returnDate}</Text>
-      {props.departureButtonPressed && <Text>Yes</Text>}
-      <DoneButton setIsModalOpen={props.setIsModalOpen} marginTop="10%" />
+
+      <TouchableOpacity onPress={onClose}>
+        <Text style={styles.closeText}>Close</Text>
+      </TouchableOpacity>
     </ModalContainer>
   );
 };
