@@ -53,46 +53,49 @@ const SearchResultsScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => {
-          props.navigation.goBack();
-        }}
-      >
-        <Ionicons name="arrow-back" size={24} color="black" />
-      </TouchableOpacity>
-      <ScrollView contentContainerStyle={styles.flightOptionsContainer}>
-        {props.flightOptions.map((item, index) => {
-          const flightInfo = item.itineraries.flatMap((itinerary, i) => {
-            const segments = itinerary.segments;
+      <View style={styles.backButtonContainer}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => {
+            props.navigation.goBack();
+          }}
+        >
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.scrollViewContainer}>
+        <ScrollView contentContainerStyle={styles.flightOptionsContainer}>
+          {props.flightOptions.map((item, index) => {
+            const flightInfo = item.itineraries.flatMap((itinerary, i) => {
+              const segments = itinerary.segments;
 
-            return segments.map((segment) => ({
-              flightName: `${segment.carrierCode} ${segment.number}`,
-              departure: `${segment.departure.iataCode} ${segment.departure.at}`,
-              destination: `${segment.arrival.iataCode} ${segment.arrival.at}`,
-              isReturn: i === 1,
-            }));
-          });
+              return segments.map((segment) => ({
+                flightName: `${segment.carrierCode} ${segment.number}`,
+                departure: `${segment.departure.iataCode} ${segment.departure.at}`,
+                destination: `${segment.arrival.iataCode} ${segment.arrival.at}`,
+                isReturn: i === 1,
+              }));
+            });
 
-          return (
-            <TouchableOpacity
-              key={`${item.id}-${fetchCounter}`}
-              style={
-                index !== props.flightOptions.length - 1
-                  ? styles.itemWithSeparator
-                  : {}
-              }
-              onPress={() => sendFlightPricingRequest(item)}
-            >
-              <FlightOffer
-                flightInfo={flightInfo}
-                price={`${item.price.currency} ${item.price.total}`}
-              />
-            </TouchableOpacity>
-          );
-          // ... existing code ...
-        })}
-      </ScrollView>
+            return (
+              <TouchableOpacity
+                key={`${item.id}-${fetchCounter}`}
+                style={
+                  index !== props.flightOptions.length - 1
+                    ? styles.itemWithSeparator
+                    : {}
+                }
+                onPress={() => sendFlightPricingRequest(item)}
+              >
+                <FlightOffer
+                  flightInfo={flightInfo}
+                  price={`${item.price.currency} ${item.price.total}`}
+                />
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
       {props.flightConfirmation && (
         <FlightDetailsModal
           isModalOpen={isFlightDetailModalOpen}
@@ -129,6 +132,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: width * 0.1,
   },
+
+  scrollViewContainer: {
+    flex: 1,
+  },
+  backButtonContainer: {
+    position: "absolute",
+    top: height * 0.02,
+    left: width * 0.02,
+    zIndex: 2,
+  },
+  backButton: {},
 });
 
 export default SearchResultsScreen;

@@ -1,24 +1,54 @@
 import React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const FlightOffer = ({ flightInfo, price }) => {
+  const formatTime = (time) => {
+    const date = new Date(time);
+    return `${date.getHours().toString().padStart(2, "0")}:${date
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const renderStops = (infoList) => {
+    const stops = infoList.length - 1;
+    if (stops === 0) {
+      return "Non-stop";
+    }
+    return `${stops} stop${stops > 1 ? "s" : ""}`;
+  };
+
+  const departureFlights = flightInfo.filter((info) => !info.isReturn);
+  const returnFlights = flightInfo.filter((info) => info.isReturn);
+
   return (
     <View style={styles.flightOffer}>
-      {flightInfo.map((info, index) => (
-        <View key={index} style={styles.flightInfoContainer}>
-          {info.isReturn && (
-            <Text style={styles.returnFlightText}>Return Flight</Text>
-          )}
-          <Text style={styles.flightName}>{info.flightName}</Text>
-          <Text style={styles.departure}>{info.departure}</Text>
-          <Text style={styles.destination}>{info.destination}</Text>
-          {index !== flightInfo.length - 1 && (
-            <Text style={styles.transferText}>Transfer</Text>
-          )}
+      <View style={styles.segment}>
+        <Text style={styles.departure}>
+          {departureFlights[0].departure.split(" ")[0]}{" "}
+          {formatTime(departureFlights[0].departure.split(" ")[1])}
+        </Text>
+        <Text style={styles.stops}>{renderStops(departureFlights)}</Text>
+        <Text style={styles.destination}>
+          {departureFlights.slice(-1)[0].destination.split(" ")[0]}{" "}
+          {formatTime(departureFlights.slice(-1)[0].destination.split(" ")[1])}
+        </Text>
+      </View>
+      {returnFlights.length > 0 && (
+        <View style={styles.segment}>
+          <Text style={styles.departure}>
+            {returnFlights[0].departure.split(" ")[0]}{" "}
+            {formatTime(returnFlights[0].departure.split(" ")[1])}
+          </Text>
+          <Text style={styles.stops}>{renderStops(returnFlights)}</Text>
+          <Text style={styles.destination}>
+            {returnFlights.slice(-1)[0].destination.split(" ")[0]}{" "}
+            {formatTime(returnFlights.slice(-1)[0].destination.split(" ")[1])}
+          </Text>
         </View>
-      ))}
+      )}
       <Text style={styles.price}>{price}</Text>
       <Text style={styles.bookNowButton}>Book Now</Text>
     </View>
@@ -26,6 +56,10 @@ const FlightOffer = ({ flightInfo, price }) => {
 };
 
 const styles = StyleSheet.create({
+  stops: {
+    color: "black",
+    marginHorizontal: width * 0.02,
+  },
   flightOffer: {
     backgroundColor: "#F4F4F4",
     padding: width * 0.03,
@@ -33,47 +67,59 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   flightInfoContainer: {
-    marginBottom: height * 0.01,
+    marginBottom: width * 0.02,
   },
-  flightName: {
-    fontSize: width * 0.045,
-    fontWeight: "bold",
-    color: "black",
-    marginBottom: height * 0.01,
+  segment: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  lineContainer: {
+    flex: 1,
+  },
+  line: {
+    height: 2,
+    backgroundColor: "#64B154",
+    flex: 1,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#64B154",
   },
   departure: {
     color: "black",
-    marginBottom: height * 0.005,
+    marginRight: width * 0.02,
   },
   destination: {
     color: "black",
-    marginBottom: height * 0.005,
+    marginLeft: width * 0.02,
   },
-  transferText: {
+  returnFlightText: {
     color: "black",
     fontStyle: "italic",
-    marginBottom: height * 0.01,
+    marginBottom: width * 0.02,
+    marginTop: width * 0.02,
   },
   price: {
     color: "black",
     fontWeight: "bold",
     fontSize: width * 0.05,
-    marginTop: height * 0.01,
+    marginTop: width * 0.02,
   },
   bookNowButton: {
     backgroundColor: "#64B154",
     color: "white",
-    paddingVertical: height * 0.01,
+    paddingVertical: width * 0.03,
     paddingHorizontal: width * 0.03,
     borderRadius: 8,
     textAlign: "center",
-    marginTop: height * 0.01,
+    marginTop: width * 0.02,
   },
-  returnFlightText: {
+  location: {
     color: "black",
-    fontStyle: "italic",
-    marginBottom: height * 0.01,
-    marginTop: height * 0.01,
+    fontSize: width * 0.03,
+    marginBottom: 2,
   },
 });
 
