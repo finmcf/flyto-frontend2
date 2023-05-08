@@ -1,14 +1,10 @@
 import React, { useRef, useState } from "react";
 import {
-  Modal,
   View,
   Text,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  PanResponder,
-  Animated,
 } from "react-native";
 
 import ModalContainer from "./ModalContainer";
@@ -19,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import DoneButton from "./DoneButton";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const PlusButton = (props) => {
   const styles = StyleSheet.create({

@@ -30,11 +30,11 @@ const FlightOffer = ({ flightInfo, price }) => {
           {departureFlights[0].departure.split(" ")[0]}{" "}
           {formatTime(departureFlights[0].departure.split(" ")[1])}
         </Text>
-        <Text style={styles.stops}>{renderStops(departureFlights)}</Text>
         <Text style={styles.destination}>
           {departureFlights.slice(-1)[0].destination.split(" ")[0]}{" "}
           {formatTime(departureFlights.slice(-1)[0].destination.split(" ")[1])}
         </Text>
+        <Text style={styles.stops}>{renderStops(departureFlights)}</Text>
       </View>
       {returnFlights.length > 0 && (
         <View style={styles.segment}>
@@ -42,11 +42,11 @@ const FlightOffer = ({ flightInfo, price }) => {
             {returnFlights[0].departure.split(" ")[0]}{" "}
             {formatTime(returnFlights[0].departure.split(" ")[1])}
           </Text>
-          <Text style={styles.stops}>{renderStops(returnFlights)}</Text>
           <Text style={styles.destination}>
             {returnFlights.slice(-1)[0].destination.split(" ")[0]}{" "}
             {formatTime(returnFlights.slice(-1)[0].destination.split(" ")[1])}
           </Text>
+          <Text style={styles.stops}>{renderStops(returnFlights)}</Text>
         </View>
       )}
       <Text style={styles.price}>{price}</Text>
