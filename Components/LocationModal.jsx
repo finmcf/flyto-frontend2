@@ -9,6 +9,8 @@ import {
   StyleSheet,
 } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
+
 import ModalContainer from "./ModalContainer";
 
 const SearchInput = ({ onSearch, onClose, width }) => {
@@ -98,13 +100,13 @@ const LocationModal = (props) => {
         );
         const result = await response.json();
 
-        // Check if result.data is defined before mapping over it
         if (result.data) {
           const locations = result.data.map((location) => {
             return {
               name: location.name,
               iata: location.iataCode,
-              countryCode: location.address?.countryCode || "", // Extract countryCode from the address object
+              countryCode: location.address?.countryCode || "",
+              subType: location.subType, // Extract the subType
             };
           });
 
@@ -114,7 +116,6 @@ const LocationModal = (props) => {
             setSuggestions(locations);
           }
         } else {
-          // Handle the case when result.data is undefined
           setSuggestions([]);
         }
       } catch (error) {
@@ -126,6 +127,14 @@ const LocationModal = (props) => {
   };
 
   const renderItem = ({ item, index }) => {
+    // Determine the icon based on the subType or if the item is "Everywhere"
+    const icon =
+      item.iata === "EVERYWHERE"
+        ? "earth"
+        : item.subType === "CITY"
+        ? "business"
+        : "airplane";
+
     return (
       <TouchableOpacity
         style={{
@@ -135,24 +144,27 @@ const LocationModal = (props) => {
           width: width * 0.9,
           alignSelf: "center",
           paddingVertical: "3%",
-          justifyContent: "flex-start", // Change from "center" to "flex-start"
+          justifyContent: "flex-start",
           alignItems: "center",
-          flexDirection: "row", // Add this line to change the layout to a row
+          flexDirection: "row",
         }}
         onPress={() => {
           props.setLocation(item.name);
           props.setLocationIata(item.iata);
-          props.setIsModalOpen(false); // Add this line to close the modal when an item is selected
+          props.setIsModalOpen(false);
         }}
       >
+        <Ionicons
+          name={icon}
+          size={width * 0.045}
+          style={{ marginRight: "2%" }}
+        />
         <Text style={{ fontSize: width * 0.045 }}>
-          {" "}
-          {/* Adjust font size */}
-          {item.iata !== "EVERYWHERE"
-            ? `${countryCodeToFlag(item.countryCode)} `
-            : ""}
           {item.name}
           {item.iata !== "EVERYWHERE" ? ` (${item.iata})` : ""}
+          {item.iata !== "EVERYWHERE"
+            ? ` ${countryCodeToFlag(item.countryCode)}`
+            : ""}
         </Text>
       </TouchableOpacity>
     );
