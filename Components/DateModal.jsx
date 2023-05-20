@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -70,13 +70,32 @@ const DateModal = (props) => {
     return updatedMarkedDates;
   };
 
+  useEffect(() => {
+    if (
+      props.oneWayOrReturnSelected === "Return" &&
+      props.departureDate &&
+      !props.returnDate
+    ) {
+      const departureDate = new Date(props.departureDate);
+      const returnDate = new Date(
+        departureDate.getFullYear(),
+        departureDate.getMonth(),
+        departureDate.getDate() + 7
+      );
+      const returnDateString = returnDate.toISOString().slice(0, 10);
+
+      props.setReturnDate(returnDateString);
+      setMarkedDates(getMarkedDates(props.departureDate, returnDateString));
+    }
+  }, [props.oneWayOrReturnSelected]);
+
   const styles = StyleSheet.create({
     closeText: {
-      fontSize: width * 0.06, // Increase the font size here
+      fontSize: width * 0.06,
       marginLeft: "6%",
     },
     closeContainer: {
-      marginTop: "20%", // Decrease the marginTop here
+      marginTop: "20%",
     },
   });
 
