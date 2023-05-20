@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Dimensions, Text } from "react-native";
 
-import { Calendar, CalendarList, DefaultTheme } from "react-native-calendars";
+import { CalendarList } from "react-native-calendars";
 
 import DoneButton from "./DoneButton";
 
@@ -9,7 +9,6 @@ const { width, height } = Dimensions.get("window");
 
 import ModalContainer from "./ModalContainer";
 
-import CloseButton from "./CloseButton";
 // Define a MyDatePicker component that renders the DatePicker component
 // and handles the selected date
 const DateModal = (props) => {
