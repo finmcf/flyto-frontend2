@@ -9,22 +9,22 @@ import {
 
 import { CalendarList } from "react-native-calendars";
 
-const { width, height } = Dimensions.get("window");
-
 import ModalContainer from "./ModalContainer";
 
-// Define a MyDatePicker component that renders the DatePicker component
-// and handles the selected date
+const { width, height } = Dimensions.get("window");
+
 const DateModal = (props) => {
   const onClose = () => {
     props.setIsModalOpen(false);
   };
+
   const today = new Date();
   const maxDate = new Date(
     today.getFullYear(),
     today.getMonth() + 12,
     today.getDate()
   );
+
   const maxDateString = maxDate.toISOString().slice(0, 10);
   const todayString = today.toISOString().slice(0, 10);
 
@@ -61,55 +61,35 @@ const DateModal = (props) => {
         color: "#D7F8D0",
       };
     }
+
     updatedMarkedDates[lastDate] = {
       endingDay: true,
       color: "#D7F8D0",
     };
+
     return updatedMarkedDates;
-  };
-
-  const markeddDates = {
-    [props.departureDate]: {
-      startingDay: true,
-
-      color: "#D7F8D0",
-    },
-
-    [props.returnDate]: {
-      endingDay: true,
-      color: "#D7F8D0",
-    },
   };
 
   const styles = StyleSheet.create({
     closeText: {
-      fontSize: width * 0.045,
+      fontSize: width * 0.06, // Increase the font size here
       marginLeft: "6%",
+    },
+    closeContainer: {
+      marginTop: "20%", // Decrease the marginTop here
     },
   });
 
   return (
-    // Use a View component to wrap the DatePicker component
-
     <ModalContainer
       isModalOpen={props.isModalOpen}
       setIsModalOpen={props.setIsModalOpen}
     >
-      <View
-        style={{
-          width,
-          height: height * 0.75,
-          borderColor: "#595454",
-
-          borderBottomWidth: 1,
-        }}
-      >
+      <View style={{ width, height: height * 0.6 }}>
         <CalendarList
           minDate={todayString}
           maxDate={maxDateString}
-          // Max amount of months allowed to scroll to the past. Default = 50
           pastScrollRange={0}
-          // Max amount of months allowed to scroll to the future. Default = 50
           futureScrollRange={12}
           onDayPress={(date) => {
             if (
@@ -121,7 +101,6 @@ const DateModal = (props) => {
                 [date.dateString]: {
                   startingDay: true,
                   endingDay: true,
-
                   color: "#D7F8D0",
                 },
               });
@@ -140,10 +119,11 @@ const DateModal = (props) => {
           theme={theme}
         />
       </View>
-
-      <TouchableOpacity onPress={onClose}>
-        <Text style={styles.closeText}>Close</Text>
-      </TouchableOpacity>
+      <View style={styles.closeContainer}>
+        <TouchableOpacity onPress={onClose}>
+          <Text style={styles.closeText}>Close</Text>
+        </TouchableOpacity>
+      </View>
     </ModalContainer>
   );
 };

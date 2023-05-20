@@ -50,8 +50,6 @@ const DateModal = (props) => {
           width,
           height: height * 0.75,
           borderColor: "#595454",
-
-          borderBottomWidth: 1,
         }}
       >
         <CalendarList
