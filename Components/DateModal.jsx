@@ -8,7 +8,6 @@ import {
 } from "react-native";
 
 import { CalendarList } from "react-native-calendars";
-
 import ModalContainer from "./ModalContainer";
 
 const { width, height } = Dimensions.get("window");
@@ -106,12 +105,26 @@ const DateModal = (props) => {
   }, [props.oneWayOrReturnSelected]);
 
   const styles = StyleSheet.create({
-    closeText: {
-      fontSize: width * 0.06,
-      marginLeft: "6%",
+    modalContainer: {
+      flex: 1,
+      justifyContent: "flex-end",
+      alignItems: "center",
+      backgroundColor: "#00000080",
     },
-    closeContainer: {
-      marginTop: "20%",
+    calendarContainer: {
+      width: "100%",
+      backgroundColor: "white",
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      paddingTop: 20,
+    },
+    closeButton: {
+      alignSelf: "flex-end",
+      marginRight: 10,
+    },
+    closeButtonText: {
+      fontSize: 18,
+      color: "red",
     },
   });
 
@@ -119,8 +132,12 @@ const DateModal = (props) => {
     <ModalContainer
       isModalOpen={props.isModalOpen}
       setIsModalOpen={props.setIsModalOpen}
+      style={styles.modalContainer}
     >
-      <View style={{ width, height: height * 0.6 }}>
+      <View style={styles.calendarContainer}>
+        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+          <Text style={styles.closeButtonText}>Close</Text>
+        </TouchableOpacity>
         <CalendarList
           minDate={todayString}
           maxDate={maxDateString}
@@ -171,11 +188,6 @@ const DateModal = (props) => {
           markedDates={markedDates}
           theme={theme}
         />
-      </View>
-      <View style={styles.closeContainer}>
-        <TouchableOpacity onPress={onClose}>
-          <Text style={styles.closeText}>Close</Text>
-        </TouchableOpacity>
       </View>
     </ModalContainer>
   );
