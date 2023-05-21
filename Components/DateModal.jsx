@@ -118,6 +118,7 @@ const DateModal = (props) => {
       fontSize: width * 0.045,
       fontFamily: "SF-Pro",
       marginLeft: "6%",
+      color: "red",
     },
     dateContainer: {
       width: width * 0.7,
@@ -137,22 +138,56 @@ const DateModal = (props) => {
       fontSize: width * 0.045,
       fontFamily: "SF-Pro",
       marginHorizontal: 10,
+      color: "#64B154",
     },
   });
 
-  const DateDisplay = () => (
-    <View style={styles.dateContainer}>
-      <Text style={styles.dateText}>
-        {props.departureDate ? props.departureDate : "Select departure date"}
-      </Text>
-      {props.returnDate && (
-        <>
-          <Text style={styles.arrow}>→</Text>
-          <Text style={styles.dateText}>{props.returnDate}</Text>
-        </>
-      )}
-    </View>
-  );
+  const displayDate = (date) => {
+    const d = new Date(date);
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const month = months[d.getMonth()];
+    const shortMonth = month.substring(0, 3);
+
+    if (props.returnDate) {
+      return `${d.getDate()} ${shortMonth} ${String(d.getFullYear()).slice(
+        -2
+      )}`;
+    } else {
+      return `${d.getDate()} ${month} ${d.getFullYear()}`;
+    }
+  };
+
+  const DateDisplay = () => {
+    return (
+      <View style={styles.dateContainer}>
+        <Text style={styles.dateText}>
+          {props.departureDate
+            ? displayDate(props.departureDate)
+            : "Select departure date"}
+        </Text>
+        {props.returnDate && (
+          <>
+            <Text style={styles.arrow}>→</Text>
+            <Text style={styles.dateText}>{displayDate(props.returnDate)}</Text>
+          </>
+        )}
+      </View>
+    );
+  };
 
   return (
     <ModalContainer

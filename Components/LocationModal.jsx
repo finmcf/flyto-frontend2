@@ -43,6 +43,7 @@ const SearchInput = ({ onSearch, onClose, width }) => {
       fontSize: width * 0.045,
       fontFamily: "SF-Pro",
       marginLeft: "6%",
+      color: "red",
     },
   });
 
