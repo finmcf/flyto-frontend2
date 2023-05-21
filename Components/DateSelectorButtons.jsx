@@ -55,7 +55,7 @@ const DateButtons = (props) => {
   const formatDate = (inputDate) => {
     const dateObject = new Date(inputDate);
 
-    const day = String(dateObject.getDate()).padStart(2, "0");
+    const day = dateObject.getDate(); // Changed this line
     const monthNames = [
       "Jan",
       "Feb",

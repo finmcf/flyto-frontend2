@@ -105,39 +105,67 @@ const DateModal = (props) => {
   }, [props.oneWayOrReturnSelected]);
 
   const styles = StyleSheet.create({
-    modalContainer: {
-      flex: 1,
-      justifyContent: "flex-end",
+    topView: {
+      flexDirection: "row",
+      justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#00000080",
-    },
-    calendarContainer: {
+      backgroundColor: "#fffefe",
+      paddingHorizontal: width * 0.025,
+      paddingVertical: width * 0.025,
       width: "100%",
-      backgroundColor: "white",
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      paddingTop: 20,
     },
-    closeButton: {
-      alignSelf: "flex-end",
-      marginRight: 10,
+    closeText: {
+      fontSize: width * 0.045,
+      fontFamily: "SF-Pro",
+      marginLeft: "6%",
     },
-    closeButtonText: {
-      fontSize: 18,
-      color: "red",
+    dateContainer: {
+      width: width * 0.7,
+      height: width * 0.1,
+      paddingHorizontal: width * 0.025,
+      backgroundColor: "#F4F4F4",
+      borderRadius: width * 0.04,
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "row",
+    },
+    dateText: {
+      fontSize: width * 0.045,
+      fontFamily: "SF-Pro",
+    },
+    arrow: {
+      fontSize: width * 0.045,
+      fontFamily: "SF-Pro",
+      marginHorizontal: 10,
     },
   });
+
+  const DateDisplay = () => (
+    <View style={styles.dateContainer}>
+      <Text style={styles.dateText}>
+        {props.departureDate ? props.departureDate : "Select departure date"}
+      </Text>
+      {props.returnDate && (
+        <>
+          <Text style={styles.arrow}>→</Text>
+          <Text style={styles.dateText}>{props.returnDate}</Text>
+        </>
+      )}
+    </View>
+  );
 
   return (
     <ModalContainer
       isModalOpen={props.isModalOpen}
       setIsModalOpen={props.setIsModalOpen}
-      style={styles.modalContainer}
     >
-      <View style={styles.calendarContainer}>
-        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-          <Text style={styles.closeButtonText}>Close</Text>
+      <View style={styles.topView}>
+        <TouchableOpacity onPress={onClose}>
+          <Text style={styles.closeText}>Close</Text>
         </TouchableOpacity>
+        <DateDisplay />
+      </View>
+      <View style={{ width, height: height * 1 }}>
         <CalendarList
           minDate={todayString}
           maxDate={maxDateString}
