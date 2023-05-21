@@ -26,6 +26,7 @@ const SearchInput = ({ onSearch, onClose, width }) => {
       borderRadius: width * 0.04,
       fontSize: width * 0.045,
       textAlign: "center",
+      fontFamily: "SF-Pro",
     },
     topView: {
       flexDirection: "row",
@@ -40,6 +41,7 @@ const SearchInput = ({ onSearch, onClose, width }) => {
     },
     closeText: {
       fontSize: width * 0.045,
+      fontFamily: "SF-Pro",
       marginLeft: "6%",
     },
   });
@@ -135,6 +137,17 @@ const LocationModal = (props) => {
         ? "business"
         : "airplane";
 
+    const formattedName =
+      item.iata === "EVERYWHERE"
+        ? item.name
+        : item.name
+            .split(" ")
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            )
+            .join(" ");
+
     return (
       <TouchableOpacity
         style={{
@@ -159,8 +172,8 @@ const LocationModal = (props) => {
           size={width * 0.045}
           style={{ marginRight: "2%" }}
         />
-        <Text style={{ fontSize: width * 0.045 }}>
-          {item.name}
+        <Text style={{ fontSize: width * 0.045, fontFamily: "SF-Pro" }}>
+          {formattedName}
           {item.iata !== "EVERYWHERE" ? ` (${item.iata})` : ""}
           {item.iata !== "EVERYWHERE"
             ? ` ${countryCodeToFlag(item.countryCode)}`

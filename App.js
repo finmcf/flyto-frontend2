@@ -2,8 +2,10 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { Text, View, ScrollView, Animated } from "react-native";
+import { useState, useEffect } from "react";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
-import { useState, useEffect, useRef } from "react";
 import FlightSearchScreen from "./FlightSearchScreen";
 import SearchResultsScreen from "./Components/SearchResultsScreen";
 
@@ -11,10 +13,38 @@ const Stack = createStackNavigator();
 
 const App = () => {
   const [flightOptions, setFlightOptions] = useState([]);
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [flightConfirmation, setFlightConfirmation] = useState([]);
+  const [appIsReady, setAppIsReady] = useState(false);
+
+  let [fontsLoaded] = useFonts({
+    "SF-Pro": require("./assets/fonts/SF-Pro.ttf"),
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  useEffect(() => {
+    if (appIsReady) {
+      SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="FlightSearchScreen">

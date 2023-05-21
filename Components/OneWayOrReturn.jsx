@@ -23,7 +23,7 @@ const ChoiceButton = (props) => {
         props.oneWayOrReturnSelected === props.type ? "#D7F8D0" : "#F4F4F4",
     },
     text: {
-      fontFamily: "Roboto",
+      fontFamily: "SF-Pro",
       fontSize: width * 0.045,
       color: props.oneWayOrReturnSelected === props.type ? "#64B154" : "black",
     },

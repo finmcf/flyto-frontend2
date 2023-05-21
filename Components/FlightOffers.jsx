@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   returnFlightText: {
     color: "black",
-    fontStyle: "italic",
+
     marginBottom: width * 0.02,
     marginTop: width * 0.02,
   },

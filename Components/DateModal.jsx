@@ -15,6 +15,22 @@ const { width, height } = Dimensions.get("window");
 
 const DateModal = (props) => {
   const onClose = () => {
+    if (
+      props.oneWayOrReturnSelected === "Return" &&
+      props.departureDate &&
+      !props.returnDate
+    ) {
+      const departureDate = new Date(props.departureDate);
+      const returnDate = new Date(
+        departureDate.getFullYear(),
+        departureDate.getMonth(),
+        departureDate.getDate() + 7
+      );
+      const returnDateString = returnDate.toISOString().slice(0, 10);
+
+      props.setReturnDate(returnDateString);
+      setMarkedDates(getMarkedDates(props.departureDate, returnDateString));
+    }
     props.setIsModalOpen(false);
   };
 
@@ -125,12 +141,30 @@ const DateModal = (props) => {
               });
               props.setDepartureDate(date.dateString);
               props.setDepartureButtonPressed(false);
-              props.setReturnDate(false);
-            } else {
-              setMarkedDates(
-                getMarkedDates(props.departureDate, date.dateString)
-              );
-              props.setReturnDate(date.dateString);
+              props.setReturnDate(undefined);
+            } else if (
+              props.departureDate &&
+              props.oneWayOrReturnSelected === "Return"
+            ) {
+              const departureDate = new Date(props.departureDate);
+              const selectedDate = new Date(date.dateString);
+
+              if (selectedDate >= departureDate) {
+                setMarkedDates(
+                  getMarkedDates(props.departureDate, date.dateString)
+                );
+                props.setReturnDate(date.dateString);
+              } else {
+                setMarkedDates({
+                  [date.dateString]: {
+                    startingDay: true,
+                    endingDay: true,
+                    color: "#D7F8D0",
+                  },
+                });
+                props.setDepartureDate(date.dateString);
+                props.setReturnDate(undefined);
+              }
             }
           }}
           markingType={"period"}

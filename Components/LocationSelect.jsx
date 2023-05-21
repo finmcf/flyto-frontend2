@@ -27,7 +27,7 @@ const LocationSelectButtons = (props) => {
     },
     textsmall: {
       color: "#afafaf",
-      fontFamily: "Roboto",
+      fontFamily: "SF-Pro",
 
       fontSize: width * 0.03,
 
@@ -35,6 +35,7 @@ const LocationSelectButtons = (props) => {
     },
     textbig: {
       fontSize: width * 0.04,
+      fontFamily: "SF-Pro",
 
       marginLeft: "2%",
     },
