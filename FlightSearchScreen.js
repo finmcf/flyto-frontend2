@@ -296,6 +296,7 @@ export default function FlightSearchScreen(props) {
       <ClassModal
         isModalOpen={isClassModalOpen}
         setIsModalOpen={setIsClassModalOpen}
+        travelClass={travelClass}
         setTravelClass={setTravelClass}
       />
       <DateModal

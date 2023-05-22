@@ -11,7 +11,7 @@ import {
 import ModalContainer from "./ModalContainer";
 
 const flightClasses = [
-  { displayName: "ECONOMY ", value: "ECONOMY" },
+  { displayName: "ECONOMY", value: "ECONOMY" },
   { displayName: "PREMIUM ECONOMY", value: "PREMIUM_ECONOMY" },
   { displayName: "BUSINESS", value: "BUSINESS" },
   { displayName: "FIRST", value: "FIRST" },
@@ -49,6 +49,11 @@ const ClassModal = (props) => {
       width: "100%",
       position: "relative",
     },
+    selectedClass: {
+      fontSize: width * 0.045,
+      fontFamily: "SF-Pro",
+      marginLeft: "2%",
+    },
   });
 
   const renderItem = ({ item, index }) => (
@@ -76,6 +81,7 @@ const ClassModal = (props) => {
         <TouchableOpacity onPress={() => props.setIsModalOpen(false)}>
           <Text style={styles.closeText}>Close</Text>
         </TouchableOpacity>
+        <Text style={styles.selectedClass}>{props.travelClass}</Text>
       </View>
 
       <FlatList
