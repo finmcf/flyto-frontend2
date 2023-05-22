@@ -36,23 +36,31 @@ const ClassModal = (props) => {
     },
     closeText: {
       fontSize: width * 0.045,
-      marginLeft: "6%",
+      fontFamily: "SF-Pro",
+      color: "red",
     },
     topView: {
       flexDirection: "row",
-      justifyContent: "flex-start",
+      justifyContent: "center",
       alignItems: "center",
-      marginTop: 0,
       backgroundColor: "#fffefe",
       paddingHorizontal: width * 0.025,
       paddingVertical: width * 0.025,
       width: "100%",
-      position: "relative",
+    },
+    infoContainer: {
+      width: width * 0.7,
+      height: width * 0.1,
+      paddingHorizontal: width * 0.025,
+      backgroundColor: "#F4F4F4",
+      borderRadius: width * 0.04,
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "row",
     },
     selectedClass: {
       fontSize: width * 0.045,
       fontFamily: "SF-Pro",
-      marginLeft: "2%",
     },
   });
 
@@ -81,7 +89,9 @@ const ClassModal = (props) => {
         <TouchableOpacity onPress={() => props.setIsModalOpen(false)}>
           <Text style={styles.closeText}>Close</Text>
         </TouchableOpacity>
-        <Text style={styles.selectedClass}>{props.travelClass}</Text>
+        <View style={styles.infoContainer}>
+          <Text style={styles.selectedClass}>{props.travelClass}</Text>
+        </View>
       </View>
 
       <FlatList
