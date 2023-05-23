@@ -45,6 +45,9 @@ export default function FlightSearchScreen(props) {
   const [isArrivalLocationModalOpen, setIsArrivalLocationModalOpen] =
     useState(false);
 
+  const [travelClassDisplayName, setTravelClassDisplayName] =
+    useState("Economy");
+
   const [departureDate, setDepartureDate] = useState(
     new Date().toISOString().slice(0, 10)
   );

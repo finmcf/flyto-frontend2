@@ -49,6 +49,7 @@ const ClassModal = (props) => {
       width: "100%",
     },
     infoContainer: {
+      marginLeft: "6%",
       width: width * 0.7,
       height: width * 0.1,
       paddingHorizontal: width * 0.025,
