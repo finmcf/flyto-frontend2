@@ -16,7 +16,7 @@ const Row4 = (props) => {
       />
       <ClassButton
         setIsModalOpen={props.setIsClassModalOpen}
-        travelClass={props.travelClass}
+        selectedClassDisplayName={props.selectedClassDisplayName}
       />
     </View>
   );

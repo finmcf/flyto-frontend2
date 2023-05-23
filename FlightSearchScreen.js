@@ -45,7 +45,7 @@ export default function FlightSearchScreen(props) {
   const [isArrivalLocationModalOpen, setIsArrivalLocationModalOpen] =
     useState(false);
 
-  const [travelClassDisplayName, setTravelClassDisplayName] =
+  const [selectedClassDisplayName, setSelectedClassDisplayName] =
     useState("Economy");
 
   const [departureDate, setDepartureDate] = useState(
@@ -278,7 +278,7 @@ export default function FlightSearchScreen(props) {
           setIsClassModalOpen={setIsClassModalOpen}
           adults={adults}
           children={children}
-          travelClass={travelClass}
+          selectedClassDisplayName={selectedClassDisplayName}
         />
 
         <FlightSearch
@@ -301,7 +301,10 @@ export default function FlightSearchScreen(props) {
         setIsModalOpen={setIsClassModalOpen}
         travelClass={travelClass}
         setTravelClass={setTravelClass}
+        selectedClassDisplayName={selectedClassDisplayName}
+        setSelectedClassDisplayName={setSelectedClassDisplayName}
       />
+
       <DateModal
         oneWayOrReturnSelected={oneWayOrReturnSelected}
         isModalOpen={isDepartureDateModalOpen}

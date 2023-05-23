@@ -11,10 +11,10 @@ import {
 import ModalContainer from "./ModalContainer";
 
 const flightClasses = [
-  { displayName: "ECONOMY", value: "ECONOMY" },
-  { displayName: "PREMIUM ECONOMY", value: "PREMIUM_ECONOMY" },
-  { displayName: "BUSINESS", value: "BUSINESS" },
-  { displayName: "FIRST", value: "FIRST" },
+  { displayName: "Economy", value: "ECONOMY" },
+  { displayName: "Premium Economy", value: "PREMIUM_ECONOMY" },
+  { displayName: "Business", value: "BUSINESS" },
+  { displayName: "First", value: "FIRST" },
 ];
 
 const { width } = Dimensions.get("window");
@@ -74,6 +74,7 @@ const ClassModal = (props) => {
       onPress={() => {
         props.setTravelClass(item.value);
         props.setIsModalOpen(false);
+        props.setSelectedClassDisplayName(item.displayName);
       }}
     >
       <Text style={styles.text}>{item.displayName}</Text>
@@ -91,7 +92,9 @@ const ClassModal = (props) => {
           <Text style={styles.closeText}>Close</Text>
         </TouchableOpacity>
         <View style={styles.infoContainer}>
-          <Text style={styles.selectedClass}>{props.travelClass}</Text>
+          <Text style={styles.selectedClass}>
+            {props.selectedClassDisplayName}
+          </Text>
         </View>
       </View>
 
