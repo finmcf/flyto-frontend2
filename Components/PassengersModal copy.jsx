@@ -1,76 +1,50 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
-
-import ModalContainer from "./ModalContainer";
-
-import CloseButton from "./CloseButton";
-
 import { Ionicons } from "@expo/vector-icons";
+import ModalContainer from "./ModalContainer";
 
 const { width } = Dimensions.get("window");
 
-const PlusButton = (props) => {
+const PlusMinusButton = ({
+  isIncrementer,
+  color,
+  counter,
+  incrementer,
+  disabled,
+}) => {
   const styles = StyleSheet.create({
-    plusButton: {
+    button: {
       height: width * 0.13,
       width: width * 0.13,
       alignItems: "center",
       justifyContent: "center",
     },
   });
+
   return (
     <TouchableOpacity
-      style={styles.plusButton}
+      style={styles.button}
       activeOpacity={0.6}
-      onPress={() => {
-        props.incrementer(props.counter + 1);
-      }}
-      disabled={props.total >= 9} // Add disabled property to disable when total >= 9
+      onPress={() => incrementer(isIncrementer ? counter + 1 : counter - 1)}
+      disabled={disabled}
     >
-      <Ionicons name="add" size={width * 0.12} color={props.color} />
+      <Ionicons
+        name={isIncrementer ? "add" : "remove"}
+        size={width * 0.12}
+        color={color}
+      />
     </TouchableOpacity>
   );
 };
 
-const MinusButton = (props) => {
-  const styles = StyleSheet.create({
-    minusButton: {
-      height: width * 0.13,
-      width: width * 0.13,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  });
-  return (
-    <TouchableOpacity
-      style={styles.minusButton}
-      activeOpacity={0.6}
-      onPress={() => {
-        props.incrementer(props.counter - 1);
-      }}
-      disabled={
-        props.type === "Adults"
-          ? props.counter === 1
-            ? true
-            : false
-          : props.counter === 0
-          ? true
-          : false
-      }
-    >
-      <Ionicons name="remove" size={width * 0.12} color={props.color} />
-    </TouchableOpacity>
-  );
-};
-
-const PassengerCounter = (props) => {
-  const counterLength = props.counter.toString().length;
+const PassengerCounter = ({ type, counter, incrementer, minimum, total }) => {
+  const counterLength = counter.toString().length;
 
   const styles = StyleSheet.create({
     container: {
@@ -99,34 +73,55 @@ const PassengerCounter = (props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        {props.type}
-        {props.type === "Adults" ? "(+12)" : "(0-11)"}
+        {type}
+        {type === "Adults" ? "(+12)" : "(0-11)"}
       </Text>
 
       <View style={styles.counterContainer}>
-        <PlusButton
-          counter={props.counter}
-          incrementer={props.incrementer}
+        <PlusMinusButton
+          isIncrementer={true}
+          counter={counter}
+          incrementer={incrementer}
           color={"black"}
-          total={props.total} // Pass total as a prop
+          total={total} // Pass total as a prop
+          disabled={total >= 9}
         />
-        <Text style={styles.passengerCounter}>{props.counter}</Text>
-        <MinusButton
-          counter={props.counter}
-          incrementer={props.incrementer}
-          type={props.type}
-          minimum={props.minimum}
+        <Text style={styles.passengerCounter}>{counter}</Text>
+        <PlusMinusButton
+          isIncrementer={false}
+          counter={counter}
+          incrementer={incrementer}
+          type={type}
           color={"black"}
+          disabled={type === "Adults" ? counter === 1 : counter === 0}
         />
       </View>
     </View>
   );
 };
 
-const PassengersModal = (props) => {
-  const total = props.adults + props.children; // Calculate the total
+const PassengersModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  adults,
+  setAdults,
+  children,
+  setChildren,
+}) => {
+  const total = adults + children; // Calculate the total
 
   const styles = StyleSheet.create({
+    modalHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 20,
+    },
+    infoText: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: "black",
+    },
     closeButton: {
       alignItems: "center",
       paddingVertical: 10,
@@ -140,29 +135,35 @@ const PassengersModal = (props) => {
 
   return (
     <ModalContainer
-      isModalOpen={props.isModalOpen}
-      setIsModalOpen={props.setIsModalOpen}
+      isModalOpen={isModalOpen}
+      setIsModalOpen={setIsModalOpen}
       paddingHorizontal={"15%"}
     >
-      <TouchableOpacity
-        style={styles.closeButton}
-        onPress={() => props.setIsModalOpen(false)}
-      >
-        <Text style={styles.closeText}>Close</Text>
-      </TouchableOpacity>
+      <View style={styles.modalHeader}>
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={() => setIsModalOpen(false)}
+        >
+          <Text style={styles.closeText}>Close</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.infoText}>
+          Adults: {adults}, Children: {children}
+        </Text>
+      </View>
 
       <PassengerCounter
         type={"Adults"}
-        counter={props.adults}
-        incrementer={props.setAdults}
+        counter={adults}
+        incrementer={setAdults}
         minimum={1}
         total={total} // Pass total as a prop
       />
 
       <PassengerCounter
         type={"Children"}
-        counter={props.children}
-        incrementer={props.setChildren}
+        counter={children}
+        incrementer={setChildren}
         minimum={0}
         total={total} // Pass total as a prop
       />
