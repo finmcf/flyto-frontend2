@@ -113,23 +113,32 @@ const PassengersModal = ({
   const styles = StyleSheet.create({
     modalHeader: {
       flexDirection: "row",
-      justifyContent: "space-between",
+      justifyContent: "center",
       alignItems: "center",
-      marginBottom: 20,
+      backgroundColor: "#fffefe",
+      paddingHorizontal: width * 0.025,
+      paddingVertical: width * 0.025,
+      width: "100%",
     },
-    infoText: {
-      fontSize: 18,
-      fontWeight: "bold",
-      color: "black",
-    },
-    closeButton: {
+    infoContainer: {
+      marginLeft: "6%",
+      width: width * 0.7,
+      height: width * 0.1,
+      paddingHorizontal: width * 0.025,
+      backgroundColor: "#F4F4F4",
+      borderRadius: width * 0.04,
+      justifyContent: "center",
       alignItems: "center",
-      paddingVertical: 10,
+      flexDirection: "row",
     },
     closeText: {
-      fontSize: 18,
-      fontWeight: "bold",
-      color: "black",
+      fontSize: width * 0.045,
+      fontFamily: "SF-Pro",
+      color: "red",
+    },
+    passengerCounter: {
+      fontSize: width * 0.045,
+      fontFamily: "SF-Pro",
     },
   });
 
@@ -137,35 +146,30 @@ const PassengersModal = ({
     <ModalContainer
       isModalOpen={isModalOpen}
       setIsModalOpen={setIsModalOpen}
-      paddingHorizontal={"15%"}
+      paddingHorizontal={"0%"}
     >
       <View style={styles.modalHeader}>
-        <TouchableOpacity
-          style={styles.closeButton}
-          onPress={() => setIsModalOpen(false)}
-        >
+        <TouchableOpacity onPress={() => setIsModalOpen(false)}>
           <Text style={styles.closeText}>Close</Text>
         </TouchableOpacity>
-
-        <Text style={styles.infoText}>
-          Adults: {adults}, Children: {children}
-        </Text>
+        <View style={styles.infoContainer}>
+          <Text
+            style={styles.passengerCounter}
+          >{`Total Passengers: ${total}`}</Text>
+        </View>
       </View>
 
       <PassengerCounter
-        type={"Adults"}
+        type="Adults"
         counter={adults}
         incrementer={setAdults}
-        minimum={1}
-        total={total} // Pass total as a prop
+        total={total}
       />
-
       <PassengerCounter
-        type={"Children"}
+        type="Children"
         counter={children}
         incrementer={setChildren}
-        minimum={0}
-        total={total} // Pass total as a prop
+        total={total}
       />
     </ModalContainer>
   );
