@@ -83,7 +83,7 @@ const PassengerCounter = ({ type, counter, incrementer, minimum, total }) => {
           counter={counter}
           incrementer={incrementer}
           color={"black"}
-          total={total} // Pass total as a prop
+          total={total}
           disabled={total >= 9}
         />
         <Text style={styles.passengerCounter}>{counter}</Text>
@@ -108,7 +108,7 @@ const PassengersModal = ({
   children,
   setChildren,
 }) => {
-  const total = adults + children; // Calculate the total
+  const total = adults + children;
 
   const styles = StyleSheet.create({
     modalHeader: {
@@ -127,7 +127,7 @@ const PassengersModal = ({
       paddingHorizontal: width * 0.025,
       backgroundColor: "#F4F4F4",
       borderRadius: width * 0.04,
-      justifyContent: "center",
+      justifyContent: "space-around",
       alignItems: "center",
       flexDirection: "row",
     },
@@ -139,6 +139,12 @@ const PassengersModal = ({
     passengerCounter: {
       fontSize: width * 0.045,
       fontFamily: "SF-Pro",
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    iconText: {
+      marginRight: width * 0.03,
+      fontSize: width * 0.05,
     },
   });
 
@@ -153,9 +159,14 @@ const PassengersModal = ({
           <Text style={styles.closeText}>Close</Text>
         </TouchableOpacity>
         <View style={styles.infoContainer}>
-          <Text
-            style={styles.passengerCounter}
-          >{`Total Passengers: ${total}`}</Text>
+          <View style={styles.passengerCounter}>
+            <Text style={styles.iconText}>{`${adults}`}</Text>
+            <Ionicons name="person" size={24} color="black" />
+          </View>
+          <View style={styles.passengerCounter}>
+            <Text style={styles.iconText}>{`${children}`}</Text>
+            <Ionicons name="person" size={20} color="black" />
+          </View>
         </View>
       </View>
 
