@@ -11,6 +11,14 @@ import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
 
+const formatLocation = (location) => {
+  const words = location.toLowerCase().split(" ");
+  const formattedWords = words.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  return formattedWords.join(" ");
+};
+
 const LocationSelectButtons = (props) => {
   const styles = StyleSheet.create({
     container: {
@@ -56,10 +64,10 @@ const LocationSelectButtons = (props) => {
       {props.locationIata ? (
         props.locationIata !== "EVERYWHERE" ? (
           <Text style={styles.textbig}>
-            ({props.locationIata}) {props.location}
+            ({props.locationIata}) {formatLocation(props.location)}
           </Text>
         ) : (
-          <Text style={styles.textbig}>{props.location}</Text>
+          <Text style={styles.textbig}>{formatLocation(props.location)}</Text>
         )
       ) : (
         <Text style={styles.textbig}>Select departure</Text>
