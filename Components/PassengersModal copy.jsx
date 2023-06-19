@@ -27,6 +27,8 @@ const PlusMinusButton = ({
     },
   });
 
+  const buttonColor = disabled ? "white" : color;
+
   return (
     <TouchableOpacity
       style={styles.button}
@@ -37,7 +39,7 @@ const PlusMinusButton = ({
       <Ionicons
         name={isIncrementer ? "add" : "remove"}
         size={width * 0.12}
-        color={color}
+        color={buttonColor}
       />
     </TouchableOpacity>
   );
