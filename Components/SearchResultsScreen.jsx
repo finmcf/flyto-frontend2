@@ -11,7 +11,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import FlightOffer from "./FlightOffers";
 import FlightDetailsModal from "./FightDetailsModal";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("winow");
 
 const SearchResultsScreen = (props) => {
   const [isFlightDetailModalOpen, setIsFlightDetailModalOpen] = useState(false);
