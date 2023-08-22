@@ -80,7 +80,7 @@ const countryCodeToFlag = (countryCode) => {
 
   const flagEmoji = String.fromCodePoint(...codePoints);
 
-  console.log("Generated Flag Emoji:", flagEmoji);
+  console.log("Generated flag Emoji:", flagEmoji);
 
   return flagEmoji;
 };
