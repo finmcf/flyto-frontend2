@@ -19,7 +19,7 @@ const SearchResultsScreen = (props) => {
   const sendFlightPricingRequest = async (flight) => {
     try {
       const response = await fetch(
-        "http://192.168.1.101:4000/flight-confirmation",
+        "http://192.168.1.85:4000:4000/flight-confirmation",
         {
           method: "POST",
           headers: {
