@@ -99,7 +99,8 @@ const LocationModal = (props) => {
     if (text.length > 0) {
       try {
         const response = await fetch(
-          `http://192.168.1.101:4000/city-and-airport-search/${text}`
+          `http://192.168.1.85:4000/city-and-airport-search/${text}
+          `
         );
         const result = await response.json();
 
