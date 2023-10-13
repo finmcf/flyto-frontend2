@@ -90,7 +90,7 @@ export default function App() {
   const singleFlightSearch = () => {
     setIsLoading(true);
     fetch(
-      `http://192.168.1.85:4000/flight-search?originCode=${departureLocationIata}&destinationCode=${arrivalLocationIata}&dateOfDeparture=${departureDate}${
+      `http://localhost:4000/flight-search?originCode=${departureLocationIata}&destinationCode=${arrivalLocationIata}&dateOfDeparture=${departureDate}${
         oneWayOrReturnSelected === "Return" ? "&dateOfReturn=" + returnDate : ""
       }${
         children ? "&children=" + children : ""
