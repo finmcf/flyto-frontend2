@@ -123,7 +123,7 @@ export default function FlightSearchScreen(props) {
     Promise.all(
       routes.map((route) =>
         fetch(
-          `http://192.168.1.85:4000/flight-search?originCode=${
+          `http://localhost:4000/flight-search?originCode=${
             isDepartureEverywhere ? route.iataCode : departureLocationIata
           }&destinationCode=${
             isArrivalEverywhere ? route.iataCode : arrivalLocationIata
