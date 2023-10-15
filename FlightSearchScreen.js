@@ -1,6 +1,6 @@
-import { Text, View, ScrollView, Animated } from "react-native";
+import { View } from "react-native";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 import * as Location from "expo-location";
 
